@@ -1,0 +1,59 @@
+<div class="container" *ngIf = "userid">
+  <br>
+  <div class="row">
+      <input type="file" class="form-control col-md-10" (change)="upload($event)" accept=".png,.jpg" />
+      <div class="col-md-1" *ngIf="downloadURL | async; let downloadSrc">
+          <button type="submit" class="btn btn-primary" (click) = "uploaded(downloadSrc)">Upload</button>
+      </div>
+  </div>
+  <br>
+  <div class="progress">
+      <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadProgress | async) + '%'" [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  <input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)] = "name">
+  <br>
+  <textarea class="form-control mb-3" resize= "none" id="exampleFormControlTextarea1" rows="5" placeholder="Description" [(ngModel)] = "description"></textarea>
+  <button type="submit" class="btn btn-primary" (click) = "addblog()">SUBMIT</button>
+</div>
+<div *ngIf = "userid">
+<div class="row" *ngFor = "let blog of blog" style="margin-top:5%;">
+  <div class="col-md-4 ml-2">
+      <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{blog.image}}" alt="Image" style="height: 200px;">
+          <div class="card-body">
+            <h5 class="card-title">{{blog.name}}<i *ngIf = "blog.userid == this.userid" class="fa fa-edit" (click) = "blog.edit = true" style="position:absolute;left:80%;font-size: 20px;" aria-hidden="true"></i></h5>
+            <p class="card-text">{{blog.description}}<b><i *ngIf = "blog.userid == this.userid" (click) = "deleteblog(blog._id)" class="fa fa-trash-o" style="position:absolute;left:80%;font-size: 20px;" aria-hidden="true"></i></b></p>
+          </div>
+        </div>
+  </div>
+  <div class="col-md-4 ml-2" style="height:320px;">
+    <div style="overflow:scroll;height: 300px;">
+    <div *ngFor = "let comment of blog.comments">
+      <p>{{comment.comment}}&nbsp;&nbsp;
+        <i *ngIf = "comment.userid == this.userid" class="fa fa-edit" (click) = "comment.edit = true" style="font-size: 20px;" aria-hidden="true"></i>&nbsp;&nbsp;
+        <i *ngIf = "comment.userid == this.userid" (click) = "deletecomment(blog._id,comment._id)" class="fa fa-trash-o" style="font-size: 20px;" aria-hidden="true"></i>
+      </p>
+      <div class="row" *ngIf = "comment.edit == true">
+        <input class="form-control col-md-9"  type="text" name="name" placeholder="Your Reply" [(ngModel)] = "comment.comment">
+        <button type="submit" class="btn btn-sm btn-primary col-md-2" (click) = "putcomment(blog._id,comment._id,comment.comment)">Submit</button>
+      </div>
+      <h6 style="margin-top:-5px;">&nbsp;&nbsp;--{{comment.author}}</h6>
+    </div>
+    </div>
+    <div class="row">
+        <input class="form-control col-md-8" type="text" name="name" placeholder="Your Reply" [(ngModel)] = "blog.comment">
+        <button type="submit" class="btn btn-primary col-md-3" (click) = "addcomment(blog._id,blog.comment)">SUBMIT</button>
+    </div>
+  </div>
+  <div class="col-md-3" *ngIf = "blog.edit == true">
+    <div style="text-align: center"><h3>Edit</h3></div>
+    <input class="form-control" type="text" name="name" placeholder="{{blog.name}}" [(ngModel)] = "blog.name">
+    <br>
+    <textarea class="form-control mb-3" resize= "none" id="exampleFormControlTextarea1" rows="4" placeholder="{{blog.description}}" [(ngModel)] = "blog.description"></textarea>
+    <button type="submit" class="btn btn-primary" (click) = "editblog(blog._id,blog.name,blog.description)">SUBMIT</button>
+  </div>
+</div>
+</div>
+<div *ngIf = "!userid" style="text-align:center;margin-top: 40vh;">
+  <h1>Please Log In Into Your Account </h1>
+</div>

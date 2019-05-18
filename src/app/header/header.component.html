@@ -1,0 +1,150 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+      <a class="navbar-brand" href="#">Assignment</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar-default">
+          <div class="navbar-collapse-header">
+              <div class="row">
+                  <div class="col-6 collapse-brand">
+                      <a href="index.html">
+                          <h1>Assignment</h1>
+                      </a>
+                  </div>
+                  <div class="col-6 collapse-close">
+                      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
+                          <span></span>
+                          <span></span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <ul class="navbar-nav ml-lg-auto">
+              <li class="nav-item">
+                  <a class="nav-link nav-link-icon" routerLink = "/home">
+                      <span class="nav-link-inner--text">Home</span>
+                  </a>
+              </li>
+              <li class="nav-item" *ngIf="!usern">
+                <a class="nav-link nav-link-icon" >
+                    <span class="nav-link-inner--text" data-toggle="modal" data-target="#modal-form">Login</span>
+                </a>
+              </li>
+            <li class="nav-item" *ngIf="!usern">
+              <a class="nav-link nav-link-icon">
+                  <span class="nav-link-inner--text" data-toggle="modal" data-target="#modal-form1">SignUp</span>
+              </a>
+            </li>
+            <li class="nav-item" *ngIf="usern">
+              <a class="nav-link nav-link-icon" (click)="logOut()" routerLink = "/home" onclick="window.location.reload()">
+                  <span class="nav-link-inner--text">{{userna}}</span>
+                  <span class="nav-link-inner--text">Logout</span>
+              </a>
+            </li>
+          </ul>
+
+      </div>
+  </div>
+</nav>
+
+<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+  <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card bg-secondary shadow border-0">
+            <div class="card-header bg-white pb-5">
+                <div class="text-muted text-center mb-3"><small>Sign in with</small></div>
+                <div class="btn-wrapper text-center">
+                    <button class="btn btn-neutral btn-icon" data-toggle="modal" data-target="#modal-form" (click) = "googleLogin()">
+                        <span class="btn-inner--icon"><img src="../../assets/img/icons/common/google.svg"></span>
+                        <span class="btn-inner--text">Google</span>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body px-lg-5 py-lg-5">
+                <div class="text-center text-muted mb-4">
+                    <small>Or sign in with credentials</small>
+                </div>
+                <form role="form" novalidate #loginForm="ngForm" (ngSubmit) = "onSubmitlogin()">
+                    <div class="form-group mb-3">
+                        <div class="input-group input-group-alternative">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                            </div>
+                            <input class="form-control" [(ngModel)]="user.username" name="username"  #username="ngModel" required placeholder="Email" type="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group input-group-alternative">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                            </div>
+                            <input class="form-control" [(ngModel)]="user.password" name="password"  #password="ngModel" required placeholder="Password" type="password">
+                        </div>
+                    </div>
+                    <div class="custom-control custom-control-alternative custom-checkbox">
+                        <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
+                        <label class="custom-control-label" for=" customCheckLogin"><span style="color:black">Remember me</span></label>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" (click) = "onSubmitlogin()" class="btn btn-primary my-4" data-toggle="modal" data-target="#modal-form">Sign in</button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-form1" tabindex="-1" role="dialog" aria-labelledby="modal-form1" aria-hidden="true">
+  <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card bg-secondary shadow border-0">
+            <div class="card-header bg-white pb-5">
+                <div class="text-muted text-center mb-3"><small>Sign up with</small></div>
+                <div class="btn-wrapper text-center">
+                    <button href="#" class="btn btn-neutral btn-icon" data-toggle="modal" data-target="#modal-form1" (click) = "googleLogin()">
+                        <span class="btn-inner--icon"><img src="../../assets/img/icons/common/google.svg"></span>
+                        <span class="btn-inner--text">Google</span>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body px-lg-5 py-lg-5">
+                <div class="text-center text-muted mb-4">
+                    <small>Or sign up with credentials</small>
+                </div>
+                <form role="form" novalidate #signupForm="ngForm" (ngSubmit)="onSubmitsign()">
+                    <div class="form-group mb-3">
+                        <div class="input-group input-group-alternative">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                            </div>
+                            <input class="form-control" [(ngModel)]="user1.username" name="username"  #username="ngModel" required placeholder="Email" type="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group input-group-alternative">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                            </div>
+                            <input class="form-control" [(ngModel)]="user1.password" name="password"  #password="ngModel" required placeholder="Password" type="password">
+                        </div>
+                    </div>
+                    <div class="custom-control custom-control-alternative custom-checkbox">
+                        <input class="custom-control-input" id=" customCheckSignup" type="checkbox">
+                        <label class="custom-control-label" for=" customCheckSignup"><span style="color:black">Remember me</span></label>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" data-toggle="modal" data-target="#modal-form1" (click) = "onSubmitsign()" class="btn btn-primary my-4" routerLink = "/userprofile">Sign up</button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
